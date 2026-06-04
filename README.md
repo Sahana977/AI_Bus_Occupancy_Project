@@ -2,23 +2,24 @@
 
 ## Overview
 
-The AI Bus Occupancy Prediction System is a smart transportation analytics project that predicts bus seat occupancy, analyzes traffic conditions, and recommends optimized routes using Machine Learning and Graph Algorithms.
+AI Bus Occupancy Prediction System is a Smart Transportation Analytics project that predicts bus occupancy, analyzes traffic conditions, and optimizes routes using Machine Learning and Graph Algorithms.
 
-The system consists of:
+The system combines:
 
-* FastAPI Backend
 * React Frontend
-* Machine Learning Models
+* FastAPI Backend
+* CatBoost Machine Learning Model
+* Traffic Analysis Module
 * Route Optimization Module
 * Analytics Dashboard
 
 ---
 
-## Features
+# Features
 
-### Occupancy Prediction
+## Occupancy Prediction
 
-Predicts bus occupancy based on:
+Predicts bus occupancy using:
 
 * Trip ID
 * Stop ID
@@ -26,26 +27,26 @@ Predicts bus occupancy based on:
 * Delay Minutes
 * Peak Hour Information
 
-### Traffic Analysis
+## Traffic Analysis
 
-Analyzes traffic conditions and categorizes them as:
+Classifies traffic into:
 
-* Low Traffic
-* Moderate Traffic
-* High Traffic
+* Low
+* Moderate
+* High
 
-### Route Optimization
+## Route Optimization
 
 Uses:
 
 * Dijkstra Algorithm
 * A* Algorithm
 
-to determine the most efficient route between bus stops.
+to determine the optimal route.
 
-### Analytics Dashboard
+## Analytics Dashboard
 
-Provides:
+Displays:
 
 * Average Occupancy
 * Maximum Occupancy
@@ -55,29 +56,29 @@ Provides:
 
 ---
 
-## Technologies Used
+# Technologies Used
 
-### Frontend
+## Frontend
 
 * React.js
-* React Router
-* Axios
 * Vite
+* Axios
+* React Router
 
-### Backend
+## Backend
 
 * FastAPI
 * Pandas
 * NumPy
 * Joblib
 
-### Machine Learning
+## Machine Learning
 
-* Random Forest Regressor
-* XGBoost Regressor
-* CatBoost Regressor
+* Random Forest
+* XGBoost
+* CatBoost
 
-### Graph Algorithms
+## Graph Algorithms
 
 * NetworkX
 * Dijkstra Algorithm
@@ -85,7 +86,7 @@ Provides:
 
 ---
 
-## Project Structure
+# Project Structure
 
 ```text
 AI_Bus_Occupancy_Project/
@@ -94,7 +95,7 @@ AI_Bus_Occupancy_Project/
 │   ├── main.py
 │   ├── train_models.py
 │   ├── route_optimizer.py
-│   ├── requirements.txt
+│   └── requirements.txt
 │
 ├── frontend/
 │   ├── src/
@@ -109,14 +110,15 @@ AI_Bus_Occupancy_Project/
 │   ├── trip_encoder.pkl
 │   └── stop_encoder.pkl
 │
+├── Run_Project.bat
+├── Stop_Project.bat
+│
 └── README.md
 ```
 
 ---
 
-## Machine Learning Models
-
-The following models were trained and evaluated:
+# Machine Learning Results
 
 | Model         | R² Score |
 | ------------- | -------- |
@@ -124,7 +126,7 @@ The following models were trained and evaluated:
 | XGBoost       | 0.7860   |
 | CatBoost      | 0.8130   |
 
-Best Model Selected:
+Best Model:
 
 ```text
 CatBoost Regressor
@@ -132,16 +134,16 @@ CatBoost Regressor
 
 ---
 
-## Installation
+# Installation
 
-### Clone Repository
+## Clone Repository
 
 ```bash
 git clone <repository-url>
 cd AI_Bus_Occupancy_Project
 ```
 
-### Create Virtual Environment
+## Create Virtual Environment
 
 ```bash
 python -m venv venv
@@ -153,13 +155,13 @@ Activate:
 venv\Scripts\activate
 ```
 
-### Install Backend Dependencies
+## Install Backend Dependencies
 
 ```bash
 pip install -r backend/requirements.txt
 ```
 
-### Install Frontend Dependencies
+## Install Frontend Dependencies
 
 ```bash
 cd frontend
@@ -168,7 +170,11 @@ npm install
 
 ---
 
-## Run Backend
+# Running the Project
+
+## Option 1: Manual Start
+
+### Backend
 
 ```bash
 cd backend
@@ -176,21 +182,7 @@ cd backend
 python -m uvicorn main:app --reload
 ```
 
-Backend URL:
-
-```text
-http://127.0.0.1:8000
-```
-
-Swagger Documentation:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
----
-
-## Run Frontend
+### Frontend
 
 ```bash
 cd frontend
@@ -198,23 +190,93 @@ cd frontend
 npm run dev
 ```
 
-Frontend URL:
+---
+
+## Option 2: One Click Startup
+
+Create a file named:
 
 ```text
-http://localhost:5173
+Run_Project.bat
 ```
+
+Paste:
+
+```bat
+@echo off
+
+echo Starting Backend...
+
+start cmd /k "cd /d %~dp0backend && ..\venv\Scripts\activate && python -m uvicorn main:app --reload"
+
+timeout /t 3 > nul
+
+echo Starting Frontend...
+
+start cmd /k "cd /d %~dp0frontend && npm run dev"
+
+timeout /t 5 > nul
+
+start http://127.0.0.1:8000/docs
+
+echo.
+echo ====================================
+echo AI Bus Occupancy Project Started
+echo ====================================
+
+pause
+```
+
+Now simply double-click:
+
+```text
+Run_Project.bat
+```
+
+to launch the entire application.
 
 ---
 
-## API Endpoints
+# Stop Script
 
-### Home
+Create:
+
+```text
+Stop_Project.bat
+```
+
+Paste:
+
+```bat
+@echo off
+
+taskkill /F /IM python.exe
+taskkill /F /IM node.exe
+
+echo Project stopped successfully.
+
+pause
+```
+
+Double-click:
+
+```text
+Stop_Project.bat
+```
+
+to stop both backend and frontend.
+
+---
+
+# API Endpoints
+
+## Home
 
 ```http
 GET /
 ```
 
-### Predict Occupancy
+## Predict Occupancy
 
 ```http
 POST /predict
@@ -232,19 +294,51 @@ Sample Request:
 }
 ```
 
-### Traffic Analysis
+Sample Response:
+
+```json
+{
+  "predicted_occupancy": 87.48,
+  "occupancy_level": "High"
+}
+```
+
+---
+
+## Traffic Analysis
 
 ```http
 POST /traffic
 ```
 
-### Analytics
+Response Example:
+
+```json
+{
+  "traffic_level": 1,
+  "traffic_status": "Moderate"
+}
+```
+
+---
+
+## Analytics
 
 ```http
 GET /analytics
 ```
 
-### Health Check
+Returns:
+
+* Average Occupancy
+* Maximum Occupancy
+* Minimum Occupancy
+* Average Delay
+* Peak Hour Percentage
+
+---
+
+## Health Check
 
 ```http
 GET /health
@@ -252,7 +346,7 @@ GET /health
 
 ---
 
-## Route Optimization
+# Route Optimization
 
 Supported Stops:
 
@@ -271,41 +365,19 @@ Algorithms Used:
 
 ---
 
-## Sample Output
+# Future Enhancements
 
-### Occupancy Prediction
-
-```json
-{
-  "predicted_occupancy": 87.48,
-  "occupancy_level": "High"
-}
-```
-
-### Traffic Prediction
-
-```json
-{
-  "traffic_level": 1,
-  "traffic_status": "Moderate"
-}
-```
+* Live BMTC Data Integration
+* GPS Tracking
+* Real-Time Traffic APIs
+* Interactive Data Visualizations
+* Mobile App Support
 
 ---
 
-## Future Enhancements
+# Author
 
-* Real-time BMTC data integration
-* GPS-based route tracking
-* Live traffic API integration
-* Interactive charts and visualizations
-* Mobile application support
-
----
-
-## Author
-
-Sahana Muthu
+**Sahana Muthu**
 
 Computer Science and Engineering
 
